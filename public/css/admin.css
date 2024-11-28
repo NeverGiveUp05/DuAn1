@@ -1,0 +1,56 @@
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-bottom: 20px;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.chartCanvas {
+    width: 400px;
+    height: 400px;
+}
+
+.currentImg {
+    max-height: 175px;
+}
+
+.hiddenImg {
+    display: none;
+}
+
+@media screen and (max-width: 990px) {
+    .status {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .currentImg {
+        display: none;
+    }
+
+    .hiddenImg {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .chartCanvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .row > * {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 378px) {
+    .res-margin {
+        margin-left: 6px !important;
+    }
+}
