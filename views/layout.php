@@ -22,7 +22,7 @@
 
     <?php require $view; ?>
 
-    <?php require BASE_PATH . '/views/footer.php'; ?>
+    <?php require_once BASE_PATH . '/views/footer.php'; ?>
 
     <?php if (isset($jsPaths)) {
         foreach ($jsPaths as $jsPath) { ?>

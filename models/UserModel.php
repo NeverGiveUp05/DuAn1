@@ -1,4 +1,5 @@
 <?php
+include_once BASE_PATH . '/includes/connect_db.php';
 
 class UserModel
 {
@@ -22,8 +23,8 @@ class UserModel
 
     public function user_selectById($id)
     {
-        $sql = "SELECT * FROM khach_hang WHERE ma_khach_hang = $id";
-        return pdo_query_one($sql);
+        $sql = "SELECT * FROM nguoi_dung WHERE id = ?";
+        return pdo_query_one($sql, $id);
     }
 
     public function user_selectByEmail($email)
@@ -34,7 +35,7 @@ class UserModel
 
     public function checkUserLogin($account, $password)
     {
-        $sql = "SELECT ma_khach_hang, kich_hoat FROM khach_hang WHERE (email = ? OR so_dien_thoai = ?) AND mat_khau = ?";
+        $sql = "SELECT id, quyen_id FROM nguoi_dung WHERE (email = ? OR so_dien_thoai = ?) AND mat_khau = ?";
         return pdo_query_one($sql, $account, $account, $password);
     }
 

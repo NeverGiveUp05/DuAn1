@@ -2,7 +2,7 @@
 
 function exist_param($fieldname)
 {
-    return array_key_exists($fieldname, $_REQUEST);
+    return str_contains($_SERVER['REQUEST_URI'], $fieldname);
 }
 
 function uploadFile($file, $folderUpload)

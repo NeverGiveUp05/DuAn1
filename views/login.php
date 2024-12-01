@@ -38,7 +38,7 @@ if (isset($_SESSION['resultLogin']) && $_SESSION['resultLogin'] == 'error') { ?>
                             </p>
                             <form id="login-form" class="auth__form login-form" role="login" name="frm_customer_account_email" enctype="application/x-www-form-urlencoded" method="post" action="<?php echo BASE_URL . '/index.php/?action=userLogin' ?>">
                                 <div class="form-group">
-                                    <input class="form-control" name="account" type="email" placeholder="Email" required />
+                                    <input class="form-control" name="account" type="text" placeholder="Email / SĐT" required />
                                 </div>
                                 <div class="form-group" style="position: relative;">
                                     <input id="passwordIp" class="form-control" name="password" type="password" autocomplete="off" placeholder="Mật khẩu" style="padding-right: 40px;" required />

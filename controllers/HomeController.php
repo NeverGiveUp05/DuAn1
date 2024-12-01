@@ -1,4 +1,7 @@
 <?php
+require_once BASE_PATH . '/models/UserModel.php';
+require_once BASE_PATH . '/models/ProductModel.php';
+require_once BASE_PATH . '/models/CategoryModel.php';
 class HomeController
 {
     public $userModel;
@@ -41,6 +44,6 @@ class HomeController
             BASE_URL . '/public/js/shop.js'
         ];
 
-        require BASE_PATH . '/views/layout.php';
+        require_once BASE_PATH . '/views/layout.php';
     }
 }

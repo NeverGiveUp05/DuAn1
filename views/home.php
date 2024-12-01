@@ -43,22 +43,22 @@
                         <?php
                         foreach ($ds as $key => $value) { ?>
                             <?php if (isset($_GET['list'])) { ?>
-                                <?php if ($_GET['list'] == $value['ma_loai_hang']) { ?>
-                                    <li class='tab active' onClick='change(<?php echo $value["ma_loai_hang"] ?>)'>
+                                <?php if ($_GET['list'] == $value['id']) { ?>
+                                    <li class='tab active'>
                                         <?php echo $value['ten_loai_hang'] ?>
                                     </li>
                                 <?php   } else { ?>
-                                    <li class='tab' onClick='change(<?php echo $value["ma_loai_hang"] ?>)'>
+                                    <li class='tab' onClick='change(<?php echo $value["id"] ?>)'>
                                         <?php echo $value['ten_loai_hang'] ?>
                                     </li>
                                 <?php } ?>
                             <?php   } else { ?>
                                 <?php if ($key == 0) { ?>
-                                    <li class='tab active' onClick='change(<?php echo $value["ma_loai_hang"] ?>)'>
+                                    <li class='tab active'>
                                         <?php echo $value['ten_loai_hang'] ?>
                                     </li>
                                 <?php   } else { ?>
-                                    <li class='tab' onClick='change(<?php echo $value["ma_loai_hang"] ?>)'>
+                                    <li class='tab' onClick='change(<?php echo $value["id"] ?>)'>
                                         <?php echo $value['ten_loai_hang'] ?>
                                     </li>
                                 <?php } ?>
@@ -74,9 +74,9 @@
                     foreach ($products as $product) { ?>
                         <div class="box">
                             <div class="cart">NEW</div>
-                            <a class="img-container" href="<?php echo BASE_URL . '/?action=viewDetail&detail=' . $product['ma_hang_hoa'] ?>">
+                            <a class="img-container" href="<?php echo BASE_URL . '/?action=viewDetail&detail=' . $product['id'] ?>">
                                 <img class="cart-img" src="<?php echo $product['hinh_anh'] ?>" alt="" />
-                                <img class="pseudo-img" src="<?php echo $product['hinh_anh_nen'] ?>" alt="" />
+                                <img class="pseudo-img" src="<?php echo $product['hinh_anh_chi_tiet_1'] ?>" alt="" />
                             </a>
 
                             <div class="detail">
@@ -89,17 +89,19 @@
                                     <div class="heart">
                                         <span style="font-size: 13px; margin-right: 4px; color: #57585a;"><?php echo $product['so_luot_xem'] ?></span>
                                         <i class="fa-solid fa-eye" style="font-size: 12px; color: #57585a; margin-right: 12px"></i>
+
+                                        <!-- <i class="fa-regular fa-heart"></i> -->
                                     </div>
                                 </div>
 
-                                <div class="detail-desp"><?php echo $product['ten_hang_hoa'] ?></div>
+                                <div class="detail-desp"><?php echo $product['ten_san_pham'] ?></div>
 
                                 <div class="detail-foot">
                                     <div class="price">
                                         <span><?php if (isset($product['muc_giam_gia'])) {
                                                     $cost = $product['don_gia'] * (100 - $product['muc_giam_gia']) / 100;
                                                 } else {
-                                                    $cost = $product['don_gia'];
+                                                    $cost = $product['gia_ban'];
                                                 }
 
                                                 $formattedCost = number_format($cost, max(3 - strlen(substr(strrchr($cost, "."), 1)), 0), ",", ".");
@@ -114,7 +116,7 @@
                                             <del><?php echo number_format($product['don_gia'], 0, '', '.'); ?>đ</del>
                                         <?php   } ?>
                                     </div>
-                                    <div class="add-to-cart" onClick="addPro({name: '<?php echo $product['ten_hang_hoa'] ?>', price: <?php echo $cost ?>, img:'<?php echo $product['hinh_anh'] ?>'})">
+                                    <div class="add-to-cart" onClick="addPro({name: '<?php echo $product['ten_san_pham'] ?>', price: <?php echo $cost ?>, img:'<?php echo $product['hinh_anh'] ?>'})">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </div>
                                 </div>
@@ -125,23 +127,15 @@
 
                 </div>
                 <div class="show-all">
-                    <div id="more-pro" class="show-text">Xem thêm</div>
+                    <a href="<?php echo '?action=category&list=';
+                                if (isset($_GET['list'])) {
+                                    echo $_GET['list'];
+                                } else {
+                                    echo $ds[0]['id'];
+                                } ?>" id="more-pro" class="show-text">Xem thêm</a>
                 </div>
             </div>
         </section>
-    </div>
-    <div class="shopping" id="shopping">
-        <div class="top-shop">
-            <h3>Giỏ hàng<span class="number-cart">0</span></h3>
-        </div>
-        <div class="main-shop" id="main-shop"></div>
-        <div class="bottom-shop">
-            <div class="total-price">Tổng cộng: <strong id="total">0đ</strong></div>
-            <div class="box-action">
-                <div class="box-title">Thanh toán</div>
-            </div>
-        </div>
-        <div class="close-shop" id="close" onClick="closeShop()"><i class="fa-solid fa-xmark"></i></div>
     </div>
 </main>
 

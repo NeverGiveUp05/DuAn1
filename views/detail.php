@@ -1,18 +1,11 @@
 <?php
-date_default_timezone_set("Asia/Ho_Chi_Minh");
 
 if (isset($_POST['submit'])) {
-    // comment_add($_POST['comment'], date("Y-m-d"), $_GET['detail'], $_SESSION['user-id']);
+    // comment_add($_POST['comment'], date("Y-m-d"), $_GET['detail'], $_SESSION['userId']);
 }
 ?>
 
 <?php
-
-$detailId = $_GET['detail'];
-
-// hang_upView($detailId);
-
-// $detailProduct = hang_selectById($detailId);
 
 function format_number($number)
 {
@@ -32,7 +25,6 @@ function format_number($number)
 $currentImg = $detailProduct['hinh_anh'];
 ?>
 
-<link rel="stylesheet" href="../content/css/detail.css">
 <main id="main">
     <section class="container">
         <div class="product-detail">
@@ -49,9 +41,9 @@ $currentImg = $detailProduct['hinh_anh'];
                         </div>
                         <div class="wrapper-image">
                             <img src="<?php echo $detailProduct['hinh_anh'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh'] ?>')" />
-                            <img src="<?php echo $detailProduct['hinh_anh_nen'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_nen'] ?>')" />
-                            <img src="<?php echo $detailProduct['hinh_anh_1'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_1'] ?>')" />
-                            <img src="<?php echo $detailProduct['hinh_anh_2'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_2'] ?>')" />
+                            <img src="<?php echo $detailProduct['hinh_anh_chi_tiet_1'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_chi_tiet_1'] ?>')" />
+                            <img src="<?php echo $detailProduct['hinh_anh_chi_tiet_2'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_chi_tiet_2'] ?>')" />
+                            <img src="<?php echo $detailProduct['hinh_anh_chi_tiet_3'] ?>" alt="" class="slide-img" onClick="setCurrentImg('<?php echo $detailProduct['hinh_anh_chi_tiet_3'] ?>')" />
                         </div>
                         <div class="next" onClick="next()">
                             <i class="fa-solid fa-angle-down"></i>
@@ -59,8 +51,8 @@ $currentImg = $detailProduct['hinh_anh'];
                     </div>
                 </div>
 
-                <?php if (isset($_SESSION['user-id'])) {
-                    $id = $_SESSION['user-id'];
+                <?php if (isset($_SESSION['userId'])) {
+                    $id = $_SESSION['userId'];
 
                     // $usercurrent = user_selectById($id);
                 }
@@ -95,7 +87,7 @@ $currentImg = $detailProduct['hinh_anh'];
                     </div>
 
                     <div class="tb-comment_bottom">
-                        <?php if (isset($_SESSION['user-id'])) { ?>
+                        <?php if (isset($_SESSION['userId'])) { ?>
                             <form id="comment-form" action="" method="POST">
                                 <input autocomplete="off" type="text" name="comment" id="commentInput">
                                 <button id="commentBtn" type="submit" name="submit">Gửi</button>
@@ -108,10 +100,10 @@ $currentImg = $detailProduct['hinh_anh'];
             </div>
 
             <div class="wrapper">
-                <h1 class="prod-name"><?php echo $detailProduct['ten_hang_hoa'] ?></h1>
+                <h1 class="prod-name"><?php echo $detailProduct['ten_san_pham'] ?></h1>
 
                 <div class="sub-info">
-                    <p>SKU: <span><?php echo format_number($detailProduct['ma_hang_hoa']) ?></span></p>
+                    <p>SKU: <span><?php echo format_number($detailProduct['id']) ?></span></p>
 
                     <div class="star_dis-flex">
                         <div class="rating">
@@ -140,7 +132,7 @@ $currentImg = $detailProduct['hinh_anh'];
                     <b><?php if (isset($detailProduct['muc_giam_gia'])) {
                             $cost = $detailProduct['don_gia'] * (100 - $detailProduct['muc_giam_gia']) / 100;
                         } else {
-                            $cost = $detailProduct['don_gia'];
+                            $cost = $detailProduct['gia_ban'];
                         }
                         echo number_format($cost, 0, '', '.'); ?>đ</b>
                     <?php if (isset($detailProduct['muc_giam_gia'])) { ?>
@@ -185,7 +177,7 @@ $currentImg = $detailProduct['hinh_anh'];
                 </div>
 
                 <div class="actions">
-                    <button class="btn-add" onClick="addProPass({name: '<?php echo $detailProduct['ten_hang_hoa'] ?>', price: <?php echo $cost ?>, img:'<?php echo $detailProduct['hinh_anh'] ?>'})">Thêm vào giỏ</button>
+                    <button class="btn-add" onClick="addProPass({name: '<?php echo $detailProduct['ten_san_pham'] ?>', price: <?php echo $cost ?>, img:'<?php echo $detailProduct['hinh_anh'] ?>'})">Thêm vào giỏ</button>
                     <button class="btn-buy">Mua hàng</button>
                 </div>
 
@@ -204,7 +196,7 @@ $currentImg = $detailProduct['hinh_anh'];
                     <div class="tab-body">
                         <div id="content" class="tab-content active">
                             <p>
-                                <?php echo $detailProduct['mo_ta_hang_hoa'] ?>
+                                <?php echo $detailProduct['mo_ta'] ?>
                             </p>
 
                             <p>
@@ -445,8 +437,7 @@ $currentImg = $detailProduct['hinh_anh'];
         }
     }
 
-    // show more information
-
+    // show more information product
     btnMore.addEventListener('click', function() {
 
         angleDown.classList.toggle('rotate');

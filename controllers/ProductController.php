@@ -1,4 +1,6 @@
 <?php
+require_once BASE_PATH . '/models/ProductModel.php';
+
 class ProductController
 {
     public $productModel;
@@ -15,6 +17,19 @@ class ProductController
         $idDetail = $_GET['detail'];
         $page_title = $this->productModel->hang_getNameById($idDetail) . ' | IVY moda';
 
-        require BASE_PATH . '/views/layout.php';
+        $detailProduct = $this->productModel->hang_selectById($idDetail);
+
+        $this->productModel->hang_upView($idDetail);
+
+        $cssPaths = [
+            BASE_URL . '/public/css/style.css',
+            BASE_URL . '/public/css/detail.css',
+        ];
+
+        $jsPaths = [
+            BASE_URL . '/public/js/shop.js'
+        ];
+
+        require_once BASE_PATH . '/views/layout.php';
     }
 }

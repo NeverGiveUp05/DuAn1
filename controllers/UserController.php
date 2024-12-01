@@ -1,4 +1,6 @@
 <?php
+require_once BASE_PATH . '/models/UserModel.php';
+
 class UserController
 {
     public $userModel;
@@ -22,7 +24,7 @@ class UserController
             BASE_URL . '/public/js/shop.js'
         ];
 
-        require BASE_PATH . '/views/layout.php';
+        require_once BASE_PATH . '/views/layout.php';
     }
 
     public function handleUserLogin($postData)
@@ -32,9 +34,18 @@ class UserController
 
         $infoUser = $this->userModel->checkUserLogin($account, $password);
 
-        if (isset($infoUser)) {
-            var_dump($infoUser);
-            die();
+        if (isset($infoUser) && $infoUser['quyen_id'] == 1) {
+            $_SESSION['userId'] =  $infoUser['id'];
+
+            header('location: ' . BASE_URL . '/admin');
+        } else if (isset($infoUser) && $infoUser['quyen_id'] == 2) {
+            $_SESSION['userId'] =  $infoUser['id'];
+
+            header('location: ' . BASE_URL . '/staff');
+        } else if (isset($infoUser) && $infoUser['quyen_id'] == 3) {
+            $_SESSION['userId'] =  $infoUser['id'];
+
+            header('location: ' . BASE_URL . '/');
         } else {
             $_SESSION['resultLogin'] = 'error';
 
@@ -56,7 +67,7 @@ class UserController
             BASE_URL . '/public/js/shop.js'
         ];
 
-        require BASE_PATH . '/views/layout.php';
+        require_once BASE_PATH . '/views/layout.php';
     }
 
     public function handleUserRegister($postData, $postFile)

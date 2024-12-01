@@ -218,23 +218,26 @@
         <div class="right-header">
             <form action="" class="search-form" method="GET">
                 <button><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input id="input-search" autocomplete="off" type="text" placeholder="TÌM KIẾM SẢN PHẨM" name="search" />
+
+                <input type="hidden" name="action" value="search">
+                <input id="input-search" autocomplete="off" type="text" placeholder="TÌM KIẾM SẢN PHẨM" name="value" />
 
                 <div class="quick-search">
                     <h4>Tìm kiếm nhiều nhất</h4>
 
+                    <!-- fix cứng -->
                     <div>
-                        <a href="?search=Đầm" class="item-name">Đầm</a>
+                        <a href="?action=search&value=Đầm" class="item-name">Đầm</a>
 
-                        <a href="?search=Quần" class="item-name">Quần</a>
+                        <a href="?action=search&value=Quần" class="item-name">Quần</a>
 
-                        <a href="?search=Họa+tiết" class="item-name">Họa tiết</a>
+                        <a href="?action=search&value=Họa+tiết" class="item-name">Họa tiết</a>
 
-                        <a href="?search=Your+Dream" class="item-name">Your Dream</a>
+                        <a href="?action=search&value=Your+Dream" class="item-name">Your Dream</a>
 
-                        <a href="?search=Awesome" class="item-name">Awesome</a>
+                        <a href="?action=search&value=Awesome" class="item-name">Awesome</a>
 
-                        <a href="?search=Camellia" class="item-name">Camellia</a>
+                        <a href="?action=search&value=Camellia" class="item-name">Camellia</a>
                     </div>
                 </div>
             </form>
@@ -300,7 +303,7 @@
     <div class="bottom-shop">
         <div class="total-price">Tổng cộng: <strong id="total">0đ</strong></div>
         <div class="box-action">
-            <div class="box-title">Thanh toán</div>
+            <a href="?action=cart" class="box-title">Xem giỏ hàng</a>
         </div>
     </div>
     <div class="close-shop" id="close" onClick="closeShop()"><i class="fa-solid fa-xmark"></i></div>
