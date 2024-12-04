@@ -63,7 +63,31 @@ switch ($action) {
         $cartController->showCartPage();
         break;
 
-    case 'search':
+    case 'checkout':
+        require_once BASE_PATH .  "/controllers/CheckoutController.php";
+        $checkoutController = new CheckoutController();
+
+        $checkoutController->showCheckoutPage();
+        break;
+
+    case 'handleCheckout':
+        require_once BASE_PATH .  "/controllers/CheckoutController.php";
+        $checkoutController = new CheckoutController();
+
+        $checkoutController->handleCheckout();
+        break;
+
+    case 'statusStatistic':
+        require_once BASE_PATH .  "/controllers/StatisticController.php";
+        $StatisticController = new StatisticController();
+
+        $StatisticController->showStatisticPage();
+        break;
+
+        // case 'updateCart':
+        //     $cartController = new CartController();
+        //     $cartController->handleUpdateCart();
+        //     break;
 
     default:
         require BASE_PATH . '/views/404.php';

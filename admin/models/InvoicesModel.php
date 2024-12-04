@@ -11,7 +11,7 @@ class InvoicesModel
 
     public function invoices_getAll()
     {
-        $sql = "SELECT * FROM hoa_don";
+        $sql = "SELECT * FROM hoa_don ORDER BY id DESC;";
         return pdo_query($sql);
     }
 

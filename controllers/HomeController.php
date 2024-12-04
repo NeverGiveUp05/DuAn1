@@ -31,6 +31,8 @@ class HomeController
             $products = $this->productModel->hang_selectFirstLoaiHang();
         }
 
+        check($products);
+
         $view = BASE_PATH . '/views/home.php';
 
         $page_title = 'Trang chủ | IVY moda';

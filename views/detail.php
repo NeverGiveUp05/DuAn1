@@ -129,15 +129,16 @@ $currentImg = $detailProduct['hinh_anh'];
                 </div>
 
                 <div class="price">
-                    <b><?php if (isset($detailProduct['muc_giam_gia'])) {
-                            $cost = $detailProduct['don_gia'] * (100 - $detailProduct['muc_giam_gia']) / 100;
+                    <b><?php
+                        if (isset($detailProduct['phan_tram_giam']) && $detailProduct['phan_tram_giam'] > 0) {
+                            $cost = $detailProduct['gia_ban'] * (100 - $detailProduct['phan_tram_giam']) / 100;
                         } else {
                             $cost = $detailProduct['gia_ban'];
                         }
                         echo number_format($cost, 0, '', '.'); ?>đ</b>
-                    <?php if (isset($detailProduct['muc_giam_gia'])) { ?>
-                        <del><?php echo number_format($detailProduct['don_gia'], 0, '', '.'); ?>đ</del>
-                        <div class="price-sale"><?php echo $detailProduct['muc_giam_gia'] ?><span>%</span></div>
+                    <?php if (isset($detailProduct['phan_tram_giam']) && $detailProduct['phan_tram_giam'] > 0) { ?>
+                        <del><?php echo number_format($detailProduct['gia_ban'], 0, '', '.'); ?>đ</del>
+                        <div class="price-sale"><?php echo $detailProduct['phan_tram_giam'] ?><span>%</span></div>
                     <?php   } ?>
                 </div>
 
@@ -177,7 +178,7 @@ $currentImg = $detailProduct['hinh_anh'];
                 </div>
 
                 <div class="actions">
-                    <button class="btn-add" onClick="addProPass({name: '<?php echo $detailProduct['ten_san_pham'] ?>', price: <?php echo $cost ?>, img:'<?php echo $detailProduct['hinh_anh'] ?>'})">Thêm vào giỏ</button>
+                    <button class="btn-add" onClick="addProPass({id: <?php echo $detailProduct['id'] ?>,ten_san_pham: '<?php echo $detailProduct['ten_san_pham'] ?>', gia_ban: <?php echo $detailProduct['gia_ban'] ?>, hinh_anh: '<?php echo $detailProduct['hinh_anh'] ?>', discount: <?php echo $detailProduct['phan_tram_giam'] ?>})">Thêm vào giỏ</button>
                     <button class="btn-buy">Mua hàng</button>
                 </div>
 
@@ -402,9 +403,9 @@ $currentImg = $detailProduct['hinh_anh'];
     const inputBox = document.getElementById('inputBox');
 
     const addProPass = (item) => {
-        let quantity = Number(inputBox.value);
+        let so_luong = Number(inputBox.value);
 
-        if (quantity > 99 || quantity <= 0) {
+        if (so_luong > 99 || so_luong <= 0) {
             Swal.fire({
                 title: "Error!",
                 text: "Số lượng không hợp lệ",
@@ -412,7 +413,7 @@ $currentImg = $detailProduct['hinh_anh'];
                 confirmButtonText: "Xác nhận",
             });
         } else {
-            addPro(item, quantity);
+            addPro(item, so_luong);
         }
 
         inputBox.value = 1;

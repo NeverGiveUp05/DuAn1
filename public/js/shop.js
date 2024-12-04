@@ -11,20 +11,26 @@ const makeShop = () => {
     }
 
     arrPro.forEach((item) => {
+        if (item.phan_tram_giam > 0) {
+            cost = item.gia_ban * item.so_luong * (1 - item.phan_tram_giam / 100);
+        } else {
+            cost = item.gia_ban * item.so_luong;
+        }
+
         main.innerHTML += `
         <div class="item-product">
-        <div class="thumb"><img src=${item.img} alt="" /></div>
+        <div class="thumb"><img src=${item.hinh_anh} alt="" /></div>
     
         <div class="container-flex">
             <div class="info-product">
-                <h3 id="product-name">${item.name}</h3>
+                <h3 id="product-name">${item.ten_san_pham}</h3>
             </div>
-            <div class="trash" onClick="removePro(this)"><i class="fa-solid fa-trash-can"></i></div>
+            <div class="trash" onClick="removePro(${item.id})"><i class="fa-solid fa-trash-can"></i></div>
             <div class="item-bottom">
-                <div class="quantity" data-name="${item.name}">
+                <div class="quantity" data-id="${item.id}">
                     <div class="quantity-left" onClick="reduce(this)"><i class="fa-solid fa-minus"></i></div>
                     <input type="number" value="${
-                        item.quantity
+                        item.so_luong
                     }" id="quantity-number" onChange="typeValue(this, this.value)"/>
                     <div class="quantity-right" onClick="increase(this)"><i class="fa-solid fa-plus"></i></div>
                 </div>
@@ -35,7 +41,7 @@ const makeShop = () => {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 3,
                     currencyDisplay: "symbol",
-                }).format(item.price * item.quantity)}</div>
+                }).format(cost)}</div>
             </div>
         </div>
     </div>
@@ -47,7 +53,11 @@ const makeTotal = () => {
     let result = 0;
 
     arrPro.forEach((item) => {
-        result += item.price * item.quantity;
+        if (item.phan_tram_giam > 0) {
+            result += item.gia_ban * item.so_luong * (1 - item.phan_tram_giam / 100);
+        } else {
+            result += item.gia_ban * item.so_luong;
+        }
     });
 
     result = new Intl.NumberFormat("vi-VN", {
@@ -62,21 +72,25 @@ const makeTotal = () => {
 };
 
 const makeCountPro = () => {
-    let result = arrPro.reduce((count, item) => count + item.quantity, 0);
+    let result = arrPro.reduce((count, item) => count + item.so_luong, 0);
     listNumberCart[0].innerText = listNumberCart[1].innerText = result;
 };
 
-const makeDataShop = () => {
+const makeDataShop = (arrPro) => {
     makeShop();
 
     makeTotal();
 
     makeCountPro();
+
+    if (arrPro && arrPro.length > 0) {
+        uploadCartToServer(arrPro);
+    }
 };
 
-localStorage.getItem("shop")
+localStorage.getItem("cart")
     ? (function running() {
-          arrPro = JSON.parse(localStorage.getItem("shop"));
+          arrPro = JSON.parse(localStorage.getItem("cart"));
 
           makeDataShop();
       })()
@@ -96,14 +110,14 @@ const closeShop = () => {
 
 const addPro = (item, value) => {
     const find = arrPro.findIndex((product) => {
-        return item.name === product.name;
+        return item.id == product.id;
     });
 
-    if (find === -1) {
+    if (find == -1) {
         if (value) {
-            item = { ...item, quantity: value };
+            item = { ...item, so_luong: value };
         } else {
-            item = { ...item, quantity: 1 };
+            item = { ...item, so_luong: 1 };
         }
 
         arrPro.push(item);
@@ -115,7 +129,7 @@ const addPro = (item, value) => {
             confirmButtonText: "Xác nhận",
         });
     } else {
-        if (arrPro[find].quantity == 99) {
+        if (arrPro[find].so_luong == 99) {
             Swal.fire({
                 title: "Error!",
                 text: "Vượt quá số lượng",
@@ -124,7 +138,7 @@ const addPro = (item, value) => {
             });
         } else {
             if (value) {
-                let result = arrPro[find].quantity + value;
+                let result = arrPro[find].so_luong + value;
 
                 if (result > 99) {
                     Swal.fire({
@@ -134,7 +148,7 @@ const addPro = (item, value) => {
                         confirmButtonText: "Xác nhận",
                     });
                 } else {
-                    arrPro[find].quantity = result;
+                    arrPro[find].so_luong = result;
 
                     Swal.fire({
                         title: "Success!",
@@ -144,7 +158,7 @@ const addPro = (item, value) => {
                     });
                 }
             } else {
-                arrPro[find].quantity += 1;
+                arrPro[find].so_luong += 1;
 
                 Swal.fire({
                     title: "Success!",
@@ -156,31 +170,32 @@ const addPro = (item, value) => {
         }
     }
 
-    makeDataShop();
+    makeDataShop(arrPro);
 
-    localStorage.setItem("shop", JSON.stringify(arrPro));
+    localStorage.setItem("cart", JSON.stringify(arrPro));
 };
 
 const reduce = (item) => {
-    let productName = item.parentElement.getAttribute("data-name");
+    let productId = item.parentElement.getAttribute("data-id");
     arrPro.forEach((obj, index) => {
-        if (obj.name === productName) {
-            if (arrPro[index].quantity != 1) {
-                arrPro[index].quantity -= 1;
+        if (obj.id == productId) {
+            if (arrPro[index].so_luong != 1) {
+                arrPro[index].so_luong -= 1;
             }
         }
     });
 
-    makeDataShop();
+    makeDataShop(arrPro);
 
-    localStorage.setItem("shop", JSON.stringify(arrPro));
+    localStorage.setItem("cart", JSON.stringify(arrPro));
 };
 
 const increase = (item) => {
-    let productName = item.parentElement.getAttribute("data-name");
+    let productId = item.parentElement.getAttribute("data-id");
     arrPro.forEach((obj, index) => {
-        if (obj.name === productName) {
-            if (arrPro[index].quantity == 99) {
+        if (obj.id == productId) {
+            console.log(obj.id);
+            if (arrPro[index].so_luong == 99) {
                 Swal.fire({
                     title: "Error!",
                     text: "Vượt quá số lượng",
@@ -188,44 +203,44 @@ const increase = (item) => {
                     confirmButtonText: "Xác nhận",
                 });
             } else {
-                arrPro[index].quantity += 1;
+                arrPro[index].so_luong += 1;
             }
         }
     });
 
-    makeDataShop();
+    makeDataShop(arrPro);
 
-    localStorage.setItem("shop", JSON.stringify(arrPro));
+    localStorage.setItem("cart", JSON.stringify(arrPro));
 };
 
-const removePro = (item) => {
-    let productName = item.parentElement.children[0].innerText;
+const removePro = (id) => {
+    let productId = id;
     arrPro.forEach((obj, index) => {
-        if (obj.name === productName) {
+        if (obj.id == productId) {
             arrPro.splice(index, 1);
         }
     });
 
-    makeDataShop();
+    makeDataShop(arrPro);
 
-    localStorage.setItem("shop", JSON.stringify(arrPro));
+    localStorage.setItem("cart", JSON.stringify(arrPro));
 };
 
 const typeValue = (element, value) => {
     if (Number(value) > 0 && Number(value) < 100) {
-        let productName = element.parentElement.getAttribute("data-name");
+        let productId = element.parentElement.getAttribute("data-id");
         arrPro.forEach((obj, index) => {
-            if (obj.name === productName) {
-                arrPro[index].quantity = Number(value);
+            if (obj.id == productId) {
+                arrPro[index].so_luong = Number(value);
             }
         });
     }
 
     if (Number(value) > 99) {
-        let productName = element.parentElement.getAttribute("data-name");
+        let productId = element.parentElement.getAttribute("data-id");
         arrPro.forEach((obj, index) => {
-            if (obj.name === productName) {
-                element.value = arrPro[index].quantity;
+            if (obj.id == productId) {
+                element.value = arrPro[index].so_luong;
             }
         });
 
@@ -237,7 +252,31 @@ const typeValue = (element, value) => {
         });
     }
 
-    makeDataShop();
+    makeDataShop(arrPro);
 
-    localStorage.setItem("shop", JSON.stringify(arrPro));
+    localStorage.setItem("cart", JSON.stringify(arrPro));
+};
+
+const uploadCartToServer = async (cartData) => {
+    console.log(JSON.stringify(cartData));
+    try {
+        const response = await fetch("http://localhost/DuAn/views/updatecart.php", {
+            method: "POST", // Gửi yêu cầu POST
+            headers: {
+                "Content-Type": "application/json", // Định nghĩa kiểu dữ liệu gửi là JSON
+            },
+            body: JSON.stringify(cartData), // Chuyển đổi dữ liệu giỏ hàng thành chuỗi JSON
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json(); // Chuyển đổi phản hồi từ server thành JSON
+        console.log("Giỏ hàng đã được cập nhật", responseData);
+
+        // Nếu cần, cập nhật giao diện giỏ hàng ở đây
+    } catch (error) {
+        console.error("Đã xảy ra lỗi khi cập nhật giỏ hàng:", error);
+    }
 };

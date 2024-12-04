@@ -19,6 +19,11 @@ class ProductController
 
         $detailProduct = $this->productModel->hang_selectById($idDetail);
 
+        echo '<pre>';
+        print_r($detailProduct);
+        echo '</pre>';
+        die();
+
         $this->productModel->hang_upView($idDetail);
 
         $cssPaths = [

@@ -35,7 +35,7 @@ class UserModel
 
     public function checkUserLogin($account, $password)
     {
-        $sql = "SELECT id, quyen_id FROM nguoi_dung WHERE (email = ? OR so_dien_thoai = ?) AND mat_khau = ?";
+        $sql = "SELECT * FROM nguoi_dung WHERE (email = ? OR so_dien_thoai = ?) AND mat_khau = ?";
         return pdo_query_one($sql, $account, $account, $password);
     }
 

@@ -246,16 +246,16 @@
                 <div class="item action_pc"><i class="fa-solid fa-headphones"></i></div>
 
                 <?php
-                if (isset($usercurrent) && $usercurrent['vai_tro'] == 0 && $usercurrent['kich_hoat'] == 1) { ?>
+                if (isset($_SESSION['userCurrent'])) { ?>
                     <div class="item" onClick="openShop()" style="position: relative; margin-right: 30px">
                         <i class="fa-brands fa-shopify"></i><span class="number-cart">0</span>
                     </div>
 
                     <div class="user-account" style="display: flex; align-items: center; gap: 6px;">
-                        <img src="<?php echo $usercurrent['hinh_anh'] ?>" alt="" style="width: 28px; height: 28px; border-radius: 50%;">
-                        <a href="<?php echo BASE_URL . '/index.php/?action=logout' ?>" style="font-size: 14px; text-wrap: nowrap;" class="name">
-                            Hi, <?php echo $usercurrent['ho_ten']; ?>
-                        </a>
+                        <img src="<?php echo $_SESSION['userCurrent']['hinh_anh'] ?>" alt="" style="width: 28px; height: 28px; border-radius: 50%;">
+                        <div onclick="logout()" style="cursor: pointer; font-size: 14px; text-wrap: nowrap;" class="name">
+                            Hi, <?php echo $_SESSION['userCurrent']['ten']; ?>
+                        </div>
                     </div>
                 <?php    } else { ?>
                     <a href="?action=login" class="item action_pc"><i class="fa-regular fa-user"></i></a>
@@ -274,11 +274,11 @@
         </div>
 
         <div class="action_user">
-            <?php if (isset($usercurrent) && $usercurrent['vai_tro'] == 0 && $usercurrent['kich_hoat'] == 1) { ?>
+            <?php if (isset($_SESSION['userCurrent'])) { ?>
                 <div class="user-account_900px" style="display: flex; align-items: center; gap: 6px;">
-                    <a href="./logout.php" style="font-size: 14px; text-wrap: nowrap;" class="action_name">
-                        Hi, <?php echo $usercurrent['ho_ten']; ?>
-                    </a>
+                    <div onclick="logout()" style="cursor: pointer; font-size: 14px; text-wrap: nowrap;" class="action_name">
+                        Hi, <?php echo $_SESSION['userCurrent']['ten']; ?>
+                    </div>
                 </div>
             <?php    } else { ?>
                 <a href="?action=login" class="item">
@@ -308,3 +308,11 @@
     </div>
     <div class="close-shop" id="close" onClick="closeShop()"><i class="fa-solid fa-xmark"></i></div>
 </div>
+
+<script>
+    function logout() {
+        localStorage.clear();
+
+        window.location.href = "<?php echo BASE_URL . '/?action=logout'; ?>";
+    }
+</script>

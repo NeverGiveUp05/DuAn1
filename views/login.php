@@ -18,6 +18,26 @@ if (isset($_SESSION['resultLogin']) && $_SESSION['resultLogin'] == 'error') { ?>
 }
 ?>
 
+<?php
+if (isset($_SESSION['resultLogin']) && $_SESSION['resultLogin'] == 'locked') { ?>
+
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            html: '<p style="font-weight: 500; font-size: 18px">Tài khoản của bạn đã bị khóa!</p><p style="margin-top: 8px; font-size: 16px"><i>Vui lòng liên hệ với chúng tôi để được hỗ trợ.</i></p>',
+            icon: 'error',
+            confirmButtonText: 'Xác nhận',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+        })
+    </script>;
+
+<?php
+    unset($_SESSION['resultLogin']);
+}
+?>
+
 <style>
     html ::-webkit-scrollbar {
         width: 0px;
